@@ -35,7 +35,7 @@ class CdkStack(core.Stack):
         )
 
         # Build Dockerfile from local folder and push to ECR
-        image = ecs.ContainerImage.from_asset(directory='app2', platform=asset.Platform.LINUX_AMD64)
+        image = ecs.ContainerImage.from_asset(directory='voila-app', platform=asset.Platform.LINUX_AMD64)
 
         # Create Fargate service
         fargate_service = ecs_patterns.ApplicationLoadBalancedFargateService(

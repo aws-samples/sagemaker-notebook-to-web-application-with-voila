@@ -6,6 +6,6 @@ from cdk.cdk_stack import CdkStack
 
 
 app = core.App()
-CdkStack(app, "StreamlitWorkshop-cdk2")
+CdkStack(app, "voila-app-sharing-dashboard")
 
 app.synth()
