@@ -24,15 +24,15 @@ class CdkStack(cdk.Stack):
         else: 
             # Create a VPC
             vpc = ec2.Vpc(
-                self, "WebDemoVPC", 
+                self, "WebAppVPC", 
                 max_azs = 3,
                 )    
 
         # Create ECS cluster
-        cluster = ecs.Cluster(self, "WebDemoCluster", vpc=vpc)
+        cluster = ecs.Cluster(self, "WebAppCluster", vpc=vpc)
 
         # Add an AutoScalingGroup with spot instances to the existing cluster
-        cluster.add_capacity("AsgSpot",
+        cluster.add_capacity("ClusterAutoScalingGroup",
             max_capacity=2,
             min_capacity=1,
             desired_capacity=2,
@@ -48,7 +48,7 @@ class CdkStack(cdk.Stack):
 
         # Create Fargate service
         fargate_service = ecs_patterns.ApplicationLoadBalancedFargateService(
-            self, "WebDemoService",
+            self, "WebAppFargateService",
             cluster=cluster,            # Required
             cpu=2048,                    # Default is 256 (512 is 0.5 vCPU, 2048 is 2 vCPU)
             desired_count=1,            # Default is 1
@@ -72,7 +72,7 @@ class CdkStack(cdk.Stack):
             max_capacity=10
         )
         scaling.scale_on_cpu_utilization(
-            "CpuScaling",
+            "AppCpuScaling",
             target_utilization_percent=50,
             scale_in_cooldown=cdk.Duration.seconds(60),
             scale_out_cooldown=cdk.Duration.seconds(60),
