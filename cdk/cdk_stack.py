@@ -11,66 +11,72 @@ import logging
 
 logging.basicConfig(level=logging.INFO)
 
-class CdkStack(cdk.Stack):
 
+class CdkStack(cdk.Stack):
     def __init__(self, scope: "VoilaApp", id: str, **kwargs) -> None:
         super().__init__(scope, id, **kwargs)
 
         if self.node.try_get_context("vpc_id"):
             # Import the VPC from context
             logging.info(f'Deploying in VPC {self.node.try_get_context("vpc_id")}')
-            vpc = ec2.Vpc.from_lookup(self, "VPC", vpc_id=self.node.try_get_context("vpc_id"))
-            
-        else: 
+            vpc = ec2.Vpc.from_lookup(
+                self, "VPC", vpc_id=self.node.try_get_context("vpc_id")
+            )
+
+        else:
             # Create a VPC
             vpc = ec2.Vpc(
-                self, "WebAppVPC", 
-                max_azs = 3,
-                )    
+                self,
+                "WebAppVPC",
+                max_azs=3,
+            )
 
         # Create ECS cluster
         cluster = ecs.Cluster(self, "WebAppCluster", vpc=vpc)
 
         # Add an AutoScalingGroup with spot instances to the existing cluster
-        cluster.add_capacity("ClusterAutoScalingGroup",
+        cluster.add_capacity(
+            "ClusterAutoScalingGroup",
             max_capacity=2,
             min_capacity=1,
             desired_capacity=2,
             instance_type=ec2.InstanceType("c5.xlarge"),
-            spot_price="0.0735", ### ????
+            spot_price="0.0735",  ### ????
             cooldown=cdk.Duration.minutes(5),
             # Enable the Automated Spot Draining support for Amazon ECS
-            spot_instance_draining=True
+            spot_instance_draining=True,
         )
 
         # Build Dockerfile from local folder and push to ECR
-        image = ecs.ContainerImage.from_asset(directory='voila-app', platform=asset.Platform.LINUX_AMD64)
+        image = ecs.ContainerImage.from_asset(
+            directory="voila-app", platform=asset.Platform.LINUX_AMD64
+        )
 
-        # Create Fargate service
+        # Create Fargate service
         fargate_service = ecs_patterns.ApplicationLoadBalancedFargateService(
-            self, "WebAppFargateService",
-            cluster=cluster,            # Required
-            cpu=2048,                    # Default is 256 (512 is 0.5 vCPU, 2048 is 2 vCPU)
-            desired_count=1,            # Default is 1
+            self,
+            "WebAppFargateService",
+            cluster=cluster,  # Required
+            cpu=2048,  # Default is 256 (512 is 0.5 vCPU, 2048 is 2 vCPU)
+            desired_count=1,  # Default is 1
             task_image_options=ecs_patterns.ApplicationLoadBalancedTaskImageOptions(
-                image=image, 
+                image=image,
                 container_port=8501,
-                ),
-            memory_limit_mib=4096,      # Default is 512
-            public_load_balancer=True)  # Default is True
+            ),
+            memory_limit_mib=4096,  # Default is 512
+            public_load_balancer=True,
+        )  # Default is True
 
         ## Add policies to task role
-        #fargate_service.task_definition.add_to_task_role_policy(iam.PolicyStatement(
+        # fargate_service.task_definition.add_to_task_role_policy(iam.PolicyStatement(
         #    effect=iam.Effect.ALLOW,
         #    actions = ["rekognition:*"],
         #    resources = ["*"],
         #    )
-        #)
+        # )
 
         # Setup task auto-scaling
-        scaling = fargate_service.service.auto_scale_task_count(
-            max_capacity=10
-        )
+        scaling = fargate_service.service.auto_scale_task_count(max_capacity=10)
         scaling.scale_on_cpu_utilization(
             "AppCpuScaling",
             target_utilization_percent=50,
