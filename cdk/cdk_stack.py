@@ -41,10 +41,7 @@ class CdkStack(cdk.Stack):
             min_capacity=1,
             desired_capacity=2,
             instance_type=ec2.InstanceType("c5.xlarge"),
-            spot_price="0.0735",  ### ????
             cooldown=cdk.Duration.minutes(5),
-            # Enable the Automated Spot Draining support for Amazon ECS
-            spot_instance_draining=True,
         )
 
         # Build Dockerfile from local folder and push to ECR
@@ -56,24 +53,16 @@ class CdkStack(cdk.Stack):
         fargate_service = ecs_patterns.ApplicationLoadBalancedFargateService(
             self,
             "WebAppFargateService",
-            cluster=cluster,  # Required
-            cpu=2048,  # Default is 256 (512 is 0.5 vCPU, 2048 is 2 vCPU)
-            desired_count=1,  # Default is 1
+            cluster=cluster,  
+            cpu=2048,  
+            desired_count=1,  
             task_image_options=ecs_patterns.ApplicationLoadBalancedTaskImageOptions(
                 image=image,
                 container_port=8501,
             ),
-            memory_limit_mib=4096,  # Default is 512
+            memory_limit_mib=4096,  
             public_load_balancer=True,
-        )  # Default is True
-
-        ## Add policies to task role
-        # fargate_service.task_definition.add_to_task_role_policy(iam.PolicyStatement(
-        #    effect=iam.Effect.ALLOW,
-        #    actions = ["rekognition:*"],
-        #    resources = ["*"],
-        #    )
-        # )
+        )  
 
         # Setup task auto-scaling
         scaling = fargate_service.service.auto_scale_task_count(max_capacity=10)
