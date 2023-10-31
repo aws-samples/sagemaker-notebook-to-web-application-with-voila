@@ -7,24 +7,26 @@ from aws_cdk import (
     aws_ecs_patterns as ecs_patterns,
     aws_ecr_assets as asset,
 )
+import logging
+
+logging.basicConfig(level=logging.INFO)
 
 class CdkStack(cdk.Stack):
 
     def __init__(self, scope: "VoilaApp", id: str, **kwargs) -> None:
         super().__init__(scope, id, **kwargs)
 
-        # Create a VPC
-        vpc = ec2.Vpc(
-            self, "WebDemoVPC", 
-            max_azs = 2,
-            )     # default is all AZs in region, 
-                  # but you can limit to avoid reaching resource quota
-
-        #### ADD BRING YOUR OWN VPC SETUP
-        #### ADD BRING YOUR OWN VPC SETUP
-        #### ADD BRING YOUR OWN VPC SETUP
-        #### ADD BRING YOUR OWN VPC SETUP
-        #### ADD BRING YOUR OWN VPC SETUP
+        if self.node.try_get_context("vpc_id"):
+            # Import the VPC from context
+            logging.info(f'Deploying in VPC {self.node.try_get_context("vpc_id")}')
+            vpc = ec2.Vpc.from_lookup(self, "VPC", vpc_id=self.node.try_get_context("vpc_id"))
+            
+        else: 
+            # Create a VPC
+            vpc = ec2.Vpc(
+                self, "WebDemoVPC", 
+                max_azs = 3,
+                )    
 
         # Create ECS cluster
         cluster = ecs.Cluster(self, "WebDemoCluster", vpc=vpc)

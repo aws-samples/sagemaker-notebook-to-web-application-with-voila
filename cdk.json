@@ -15,6 +15,7 @@
     ]
   },
   "context": {
-    "aws-cdk:enableDiffNoFail": "true"
+    "aws-cdk:enableDiffNoFail": "true",
+    "vpc_id":null
   }
 }
