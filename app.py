@@ -8,7 +8,7 @@ from cdk.cdk_stack import CdkStack
 
 
 app = cdk.App()
-CdkStack(app, "voila-app-sharing-dashboard")
+CdkStack(app, "Voila-app-from-Notebook")
 
 Aspects.of(app).add(AwsSolutionsChecks())
 app.synth()
