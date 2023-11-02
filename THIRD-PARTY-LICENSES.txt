@@ -1,4 +1,4 @@
-** "@types/vscode; version 1.0 -- https://github.com/voila-gallery/gaussian-density/tree/master
+** "Voila Gallery - Gaussian density notebook example; version 1.0 -- https://github.com/voila-gallery/gaussian-density/tree/master
  
 BSD 3-Clause License
 
