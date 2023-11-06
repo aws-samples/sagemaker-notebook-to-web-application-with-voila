@@ -88,6 +88,8 @@ Voila-app-from-Notebook.WebAppFargateServiceLoadBalancer = ***
 Voila-app-from-Notebook.WebAppFargateServiceServiceURL = http://***
 ```
 
+Alternatively, you can also retrieve your app's URL in the AWS Management Console: Under EC2/Load balancers, select your application's Load Balancer and copy its DNS name.
+
 ### Delete the App 
 Destroy the stack.
 ```shell
