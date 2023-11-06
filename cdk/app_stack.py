@@ -13,7 +13,7 @@ from aws_cdk import (
 import logging
 import cdk_nag
 
-from .vpc import VpcStack
+from .vpc_stack import VpcStack
 
 
 logging.basicConfig(level=logging.INFO)
