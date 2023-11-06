@@ -58,7 +58,7 @@ If you want to deploy the solution on an already existing VPC, please in [cdk.js
 ```python
   "context": {
     "aws-cdk:enableDiffNoFail": "true",
-    "vpc_id":id_of_the_vpc
+    "vpc_id":vpc_id
   }
 ```
 Otherwise, the "vpc_id" is setup to null and the solution will create a VPC to host the application.

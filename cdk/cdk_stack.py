@@ -13,6 +13,9 @@ from aws_cdk import (
 import logging
 import cdk_nag
 
+from .vpc import VpcStack
+
+
 logging.basicConfig(level=logging.INFO)
 
 
@@ -28,25 +31,10 @@ class CdkStack(cdk.Stack):
             )
 
         else:
-            # Create a VPC
-            vpc = ec2.Vpc(
-                self,
-                "WebAppVPC",
-                max_azs=3,
-            )
-        
-        # Createa flow log for VPC
-        log_group = logs.LogGroup(self, "MyCustomLogGroup")
-
-        role = iam.Role(self, "MyCustomRole",
-            assumed_by=iam.ServicePrincipal("vpc-flow-logs.amazonaws.com")
-        )
-
-        ec2.FlowLog(self, "FlowLog",
-            resource_type=ec2.FlowLogResourceType.from_vpc(vpc),
-            destination=ec2.FlowLogDestination.to_cloud_watch_logs(log_group, role)
-        )
-        
+            # Create a new VPC
+            vpc_stack=VpcStack(self,"VpcStack")
+            vpc = vpc_stack.vpc
+            
         # Create ECS cluster
         cluster = ecs.Cluster(self, "WebAppCluster", vpc=vpc, container_insights=True)
 
@@ -154,6 +142,12 @@ class CdkStack(cdk.Stack):
         
         cdk_nag.NagSuppressions.add_resource_suppressions_by_path(stack=self, path="/Voila-app-from-Notebook/WebAppFargateService/LB/SecurityGroup/Resource", 
             suppressions=[
-            {"id": "AwsSolutions-EC23", "reason":"Default configuration of the construct. No restrictions are specifically needed for the inbound access"}
+            {"id": "AwsSolutions-EC26", "reason":"Default configuration of the construct. No restrictions are specifically needed for the inbound access"}
+            ]
+        ),
+
+        cdk_nag.NagSuppressions.add_resource_suppressions_by_path(stack=self, path="/Voila-app-from-Notebook/WebAppFargateService/LB/SecurityGroup/Resource", 
+            suppressions=[
+            {"id": "AwsSolutions-L1", "reason":"Default configuration of the construct. No restrictions are specifically needed for the inbound access"}
             ]
         ),
