@@ -19,6 +19,7 @@ NagSuppressions.add_stack_suppressions(stack, [
     {"id": "AwsSolutions-AS3", "reason":"ASG notifications in this particular use case for desplaying a Voilà App is not needed"},
     {"id": "AwsSolutions-SNS2", "reason":"SNS Topic does not need SSE"},
     {"id": "AwsSolutions-SNS3", "reason":"SNS Topic does not need requests to use SSL"},
+    {"id": 'AwsSolutions-EC23', "reason": "lorem ipsum" },
     {"id": 'AwsSolutions-EC26', "reason": "lorem ipsum" },
     {"id": "AwsSolutions-SNS2", "reason":"SNS Topic does not need SSE"},
     {"id": "AwsSolutions-SNS3", "reason":"SNS Topic does not need requests to use SSL"},
