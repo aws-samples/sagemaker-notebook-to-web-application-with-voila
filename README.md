@@ -70,6 +70,12 @@ Otherwise, the "vpc_id" is setup to null and the solution will create a VPC to h
 ```
 ### Deployment of the App
 
+![Produce a Sagemaker Notebook](diagrams/experimentation.png)
+
+![Turn it into a containerized app](diagrams/deployment.png)
+
+![and Deploy it on AWS](diagrams/containerizedApp.png)
+
 Deploy the stack.
 ```shell
 cdk deploy 
@@ -81,6 +87,7 @@ Outputs:
 Voila-app-from-Notebook.WebAppFargateServiceLoadBalancer = ***
 Voila-app-from-Notebook.WebAppFargateServiceServiceURL = http://***
 ```
+
 ### Delete the App 
 Destroy the stack.
 ```shell
