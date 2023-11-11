@@ -7,11 +7,11 @@ This solution provides a simple way to share your voilà App internaly. It uses 
 
 ## Architecture & Workflow
 
-![Workflow](diagrams/dns-name.png)
+![Workflow](diagrams/workflow.png)
 
-First, sagemaker user experiments code in a notebook and then decide to share his/her work using Voilà to create a standalone application. [Here](voila-app/notebook.ipynb)is and example of a notebook that relates to this experimentation phase.
+First, sagemaker user experiments code in a notebook and then decide to share his/her work using Voilà to create a standalone application. [Here](voila-app/notebook.ipynb) is and example of a notebook that relates to this experimentation phase.
 
-Second, our solution allow the user to containerize the application. This containerized application is then deployed in AWS Fargate and accessible to his/her collegues.
+Second, our solution allows the user to containerize the application. This containerized application is then deployed in AWS Fargate and accessible on a http address.
 ## Prerequisites
 
 - AWS Account and AWS credentials configured locally
@@ -19,7 +19,7 @@ Second, our solution allow the user to containerize the application. This contai
 
 ## Deploy using AWS CDK
 
-Follow the below steps to deploy this solution;
+Follow the below steps to deploy this solution:
 
 Clone the repository and navigate to the project directory.
 ```shell
@@ -29,14 +29,14 @@ cd voila-apg
 Create a virtualenv on MacOS and Linux:
 
 ```shell
-$ python3 -m venv .env
+python3 -m venv .env
 ```
 
 After the init process completes and the virtualenv is created, you can use the following
 step to activate your virtualenv.
 
 ```shell
-$ source .env/bin/activate
+source .env/bin/activate
 ```
 
 If you are a Windows platform, you would activate the virtualenv like this:
@@ -48,7 +48,7 @@ If you are a Windows platform, you would activate the virtualenv like this:
 Once the virtualenv is activated, you can install the required dependencies.
 
 ```shell
-$ pip install -r requirements.txt
+pip install -r requirements.txt
 ```
 
 * CDK Bootstrap - Bootstrap your AWS account for CDK. This only needs to be done once per account/region.
@@ -67,7 +67,7 @@ If you want to deploy the solution on an already existing VPC, please in [cdk.js
     "vpc_id":vpc_id
   }
 ```
-The VPC you  needs to have a public subnet and an internet gateway.
+In that case, the VPC needs to have a public subnet and an internet gateway.
 In addition, make sure in your terminal that you have the following environement variable exported:
 
 ```shell
