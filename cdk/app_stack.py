@@ -2,17 +2,11 @@ import aws_cdk as cdk
 from aws_cdk import (
     aws_ec2 as ec2,
     aws_ecs as ecs,
-    aws_ecr as ecr,
-    aws_logs as logs,
-    aws_iam as iam,
     aws_ecs_patterns as ecs_patterns,
     aws_ecr_assets as asset,
-    aws_sns as sns,
-    aws_autoscaling as autoscaling,
 )
 import logging
-import cdk_nag
-
+from constructs import Construct
 from .vpc_stack import VpcStack
 
 
@@ -20,7 +14,7 @@ logging.basicConfig(level=logging.INFO)
 
 
 class CdkStack(cdk.Stack):
-    def __init__(self, scope: "VoilaApp", id: str, **kwargs) -> None:
+    def __init__(self, scope: Construct, id: str, **kwargs) -> None:
         super().__init__(scope, id, **kwargs)
 
         if self.node.try_get_context("vpc_id"):

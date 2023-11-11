@@ -4,10 +4,10 @@ from aws_cdk import (
     aws_logs as logs,
     aws_iam as iam,
 )
+from constructs import Construct
 
-
-class VpcStack(cdk.Stack):
-    def __init__(self, scope: "VpcSetup", id: str, **kwargs) -> None:
+class VpcStack(Construct):
+    def __init__(self, scope: Construct, id: str, **kwargs) -> None:
         super().__init__(scope, id, **kwargs)
 
         # Create a VPC

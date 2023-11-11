@@ -3,11 +3,13 @@
 import aws_cdk as cdk
 from aws_cdk import Aspects
 from cdk_nag import AwsSolutionsChecks, NagSuppressions
-
+import os
 from cdk.app_stack import CdkStack
 
 app = cdk.App()
-stack = CdkStack(app, "Voila-app-from-Notebook")
+stack = CdkStack(app, "Voila-app-from-Notebook", 
+                 env=cdk.Environment(account=os.environ["ACCOUNT_ID"], region=os.environ["AWS_REGION"])
+                )
 
 Aspects.of(app).add(AwsSolutionsChecks())
 
