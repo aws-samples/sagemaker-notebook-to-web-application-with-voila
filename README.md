@@ -9,9 +9,13 @@ This solution provides a simple way to share your voilà App internaly. It uses 
 
 ## Prerequisites
 
-- AWS Account and AWS credentials configured locally
-- [aws-cdk-lib](https://pypi.org/project/aws-cdk-lib/) 2.1 or higher
 - [Docker](https://docs.docker.com/engine/install/) installed locally
+- [Node.js](https://nodejs.org/en) (>20.1) and [npm](https://www.npmjs.com/) (>9.6)
+- Install [AWS CDK](https://aws.amazon.com/cdk/)
+
+```shell
+npm install -g aws-cdk
+```
 
 ## Deploy using AWS CDK
 
